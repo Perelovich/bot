@@ -1,6 +1,7 @@
 package util;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
@@ -107,6 +108,34 @@ public class KeyboardFactory {
         row.add("❌ Отменить");
 
         keyboardMarkup.setKeyboard(List.of(row));
+        return keyboardMarkup;
+    }
+    public static ReplyKeyboardMarkup createJapanConfirmationKeyboard() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+
+        // Создаем кнопки
+        KeyboardButton confirmJapanButton = new KeyboardButton("✅ Продолжить с Японией");
+        KeyboardButton germanyButton = new KeyboardButton("🇩🇪 Германия"); // <-- ДОБАВЛЯЕМ КНОПКУ
+        KeyboardButton koreaButton = new KeyboardButton("🇰🇷 Корея");
+        KeyboardButton chinaButton = new KeyboardButton("🇨🇳 Китай");
+
+        // Создаем ряды клавиатуры
+        KeyboardRow firstRow = new KeyboardRow();
+        firstRow.add(confirmJapanButton);
+
+        KeyboardRow secondRow = new KeyboardRow();
+        secondRow.add(germanyButton); // <-- СТАВИМ ГЕРМАНИЮ В РЯД
+        secondRow.add(koreaButton);
+
+        KeyboardRow thirdRow = new KeyboardRow();
+        thirdRow.add(chinaButton);
+        // Можно добавить и в один ряд, например: secondRow.add(chinaButton), это дело вкуса
+
+        // Устанавливаем ряды и параметры
+        keyboardMarkup.setKeyboard(List.of(firstRow, secondRow, thirdRow)); // <-- ОБНОВЛЯЕМ СПИСОК РЯДОВ
+        keyboardMarkup.setResizeKeyboard(true);
+        keyboardMarkup.setOneTimeKeyboard(true);
+
         return keyboardMarkup;
     }
 }
