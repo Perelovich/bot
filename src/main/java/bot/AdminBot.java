@@ -44,16 +44,17 @@ public class AdminBot extends TelegramLongPollingBot {
         }
 
         // 2. Обработка текстовых команд
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String text = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
-            String username = update.getMessage().getFrom().getUserName();
+       if (update.hasMessage() && update.getMessage().hasText()) {
+    String text = update.getMessage().getText();
+    long chatId = update.getMessage().getChatId(); // ID чата (группы) оставляем для отправки ОТВЕТА
+    long userId = update.getMessage().getFrom().getId(); // ❗️ ВОТ РЕШЕНИЕ: ID юзера для ПРОВЕРКИ ПРАВ
+    String username = update.getMessage().getFrom().getUserName();
 
-            // Проверяем права администратора (и активируем при необходимости)
-            if (!AdminDAO.isAdmin(chatId, username)) {
-                sendMessage(chatId, "❌ Доступ запрещен.");
-                return;
-            }
+    // Проверяем права администратора по ID юзера
+    if (!AdminDAO.isAdmin(userId, username)) { // ❗️ Используем userId
+        sendMessage(chatId, "❌ Доступ запрещен.");
+        return;
+    }
 
             // Обработка команд
             if (text.equals("/orders")) {
